@@ -1,0 +1,53 @@
+<link rel="import" href="bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="bower_components/neon-animation/animations/fade-in-animation.html">
+<link rel="import" href="bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="first-page.html">
+<link rel="import" href="second-page.html">
+
+<dom-module id="main-app">
+    <template>
+        <style>
+            :host {
+                display: flex;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+
+            neon-animated-pages {
+                flex: 1;
+            }
+        </style>
+
+        <neon-animated-pages selected="{{selected}}" entry-animation="fade-in-animation"
+                             exit-animation="fade-out-animation">
+            <first-page></first-page>
+            <second-page></second-page>
+        </neon-animated-pages>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'main-app',
+            properties: {
+                pageNumber: {
+                    type: Number,
+                    value: ''
+                },
+                selected: {
+                    type: Number,
+                    notify: true,
+                    computed: '_selectPage(0)'
+                }
+            },
+            _selectPage: function(pageNumber) {
+                return pageNumber ? pageNumber : 0;
+            }
+        });
+    </script>
+
+
+</dom-module>

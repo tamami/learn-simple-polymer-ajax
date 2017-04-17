@@ -1,0 +1,84 @@
+<link rel="import" href="bower_components/paper-input/paper-input.html">
+<link rel="import" href="bower_components/paper-button/paper-button.html">
+<link rel="import" href="bower_components/iron-form/iron-form.html">
+<link rel="import" href="bower_components/paper-card/paper-card.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="first-page">
+    <template>
+        <style>
+            :host {
+                background: var(--dark-primary-color);
+            }
+
+            .bubble {
+                margin: 20px;
+                padding: 20px 20px;
+                border-radius: 20px;
+            }
+
+            #proses-button {
+                float: right;
+            }
+
+            .title {
+                font-size: 20px;
+            }
+        </style>
+
+        <h1 class="title"></h1>
+
+        <iron-ajax id="userRest"
+                   url="/test"
+                   on-response="updateData"
+                   body='{"data":"[[user]]"}'
+                   handle-as="json"
+                   method="POST"
+                   contentType="application/json"></iron-ajax>
+
+        <paper-material elevation="3" class="bubble">
+            <form is="iron-form" id="form" method="post" action="/test">
+                <paper-input name="user" value="{{user}}" label="Username" required autofocus></paper-input>
+                <paper-button on-tap="_getData">Proses</paper-button>
+                <br>
+                <paper-card heading="Isi data">
+                    <div id="content" class="card-content">
+                        [[result]]
+                    </div>
+                </paper-card>
+            </form>
+        </paper-material>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'first-page',
+
+            properties: {
+                user: String,
+                result: {
+                    type: String,
+                    value: ""
+                }
+            },
+
+            _getData: function() {
+                this.$.userRest.generateRequest();
+            },
+
+            updateData: function(servResp) {
+                var dataObjek = '{"nama":"tamami"}';
+                alert(dataObjek);
+                var json = JSON.parse(dataObjek);
+                alert(json.nama);
+                alert(servResp.detail.response);
+                var data = JSON.parse(servResp.detail.response);
+                alert(data);
+                alert(servResp.detail.response);
+                alert(data.nama);
+                this.result = data.nama;
+            }
+
+        })
+    </script>
+</dom-module>
